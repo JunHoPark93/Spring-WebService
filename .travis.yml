@@ -20,6 +20,11 @@ notifications:
     recipients:
     - pjh374968@gmail.com
 
+before_deploy:
+- zip -r springboot-webservice *
+- mkdir -p deploy
+- mv springboot-webservice.zip deploy/springboot-webservice.zip
+
 deploy:
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -28,6 +33,7 @@ deploy:
   region: ap-northeast-2
   skip_cleanup: true
   acl: public_read
+  local_dir: deploy
   wait-until-deployed: true
   on:
     repo: JunHoPark93/Spring-WebService #Github 주소
